@@ -7,7 +7,28 @@ in Classic Computer Science Problem in Python.
 
 from enum import Enum
 import random
-from typing import List, NamedTuple
+from typing import Generic, List, NamedTuple, Protocol, TypeVar
+
+T = TypeVar('T')
+class Stack(Generic[T]):
+    """Stack abstract data structure implemented by python list"""
+    
+    def __init__(self) -> None:
+        self._container: List[T] = []
+    
+    @property
+    def empty(self) -> bool:
+        return not self._container
+
+    def push(self, item: T) -> None:
+        self._container.append(item)
+        
+    def pop(self) -> T:
+        return self._container.pop()
+    
+    def __str__(self) -> str:
+        return repr(self._container)
+    
 
 class Cell(str, Enum):
     """Represent status of each cell in maze"""
