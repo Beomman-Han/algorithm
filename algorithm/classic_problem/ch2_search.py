@@ -7,9 +7,29 @@ in Classic Computer Science Problem in Python.
 
 from enum import Enum
 import random
-from typing import Generic, List, NamedTuple, Protocol, TypeVar
+from typing import Generic, List, NamedTuple, Optional, Protocol, TypeVar
+from __future__ import annotations  ## allow 'Optional[Node]' code
 
 T = TypeVar('T')
+
+class Node(Generic[T]):
+    def __init__(self,
+        state: T,
+        #parent: Optional['Node'],
+        parent: Optional[Node],
+        cost: float = 0.0,
+        heuristic: float =0.0
+        ) -> None:
+        
+        self.state = state
+        self.parent = parent
+        self.cost = cost
+        self.heuristic = heuristic
+    
+    def __lt__(self, other: 'Node') -> bool:
+        return (self.cost + self.heuristic) < (other.cost + other.heuristic)
+
+
 class Stack(Generic[T]):
     """Stack abstract data structure implemented by python list"""
     
