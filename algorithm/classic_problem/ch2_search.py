@@ -230,3 +230,29 @@ class Queue(Generic[T]):
     
     def __repr__(self) -> str:
         return repr(self._container)
+
+
+def bfs(
+    initial : T,
+    goal_test : Callable[[T], bool],
+    successors : Callable[[T], List[T]]
+    ) -> Optional[Node[T]]:
+    """Breadth first search path from initial to goal"""
+    
+    frontier: Queue[Node[T]] = Queue()
+    explored: Set[T] = set()
+    
+    ## start bfs
+    frontier.push(Node(initial, None))
+    explored.add(initial)
+    
+    while not frontier.empty:
+        current_node = frontier.pop()
+        current_state = current_node.state
+        if goal_test(current_state):
+            return current_node
+        for neighbor in successors(current_state):
+            if neighbor not in explored:
+                frontier.push(Node(neighbor, current_node))
+                explored.add(neighbor)
+    return None
