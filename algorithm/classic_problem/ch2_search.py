@@ -4,11 +4,10 @@ in Classic Computer Science Problem in Python.
 """
 
 ## find path at maze
-
+from __future__ import annotations  ## allow 'Optional[Node]' code
 from enum import Enum
 import random
-from typing import Generic, List, NamedTuple, Optional, Protocol, TypeVar
-from __future__ import annotations  ## allow 'Optional[Node]' code
+from typing import Callable, Generic, List, NamedTuple, Optional, Protocol, Set, TypeVar
 
 T = TypeVar('T')
 
@@ -24,7 +23,7 @@ class Node(Generic[T]):
         self.state = state
         self.parent = parent
         self.cost = cost
-        self.heuristic = heuristic
+        self.heuristic = heuristic  ## ??
     
     def __lt__(self, other: 'Node') -> bool:
         return (self.cost + self.heuristic) < (other.cost + other.heuristic)
@@ -49,6 +48,44 @@ class Stack(Generic[T]):
     def __str__(self) -> str:
         return repr(self._container)
     
+
+def dfs(
+    initial : T,
+    goal_test : Callable[[T], bool],
+    successors : Callable[[T], List[T]]
+    ) -> Optional[Node[T]]:
+    """Depth first search path from initial to goal"""
+    
+    frontier: Stack = Stack()
+    explored: Set[T] = set()
+    
+    ## start to search path
+    frontier.push(Node(initial, None))
+    explored.add(initial)
+    
+    while not frontier.empty:
+        current_node = frontier.pop()
+        current_state = current_node.state
+        if goal_test(current_state):
+            return current_node
+        for child in successors(current_state):
+            if child not in explored:
+                child_node = Node(child, current_node)
+                frontier.push(child_node)
+                explored.add(child)
+    return None  ## could not find goal
+
+def node_to_path(node: Node[T]) -> List[T]:
+    """transform node connection info to list"""
+    
+    path: List[T] = []
+    curr = node
+    while curr:
+        path.append(curr.state)
+        curr = curr.parent
+    path.reverse()
+    return path
+        
 
 class Cell(str, Enum):
     """Represent status of each cell in maze"""
