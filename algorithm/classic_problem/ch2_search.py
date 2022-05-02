@@ -7,6 +7,7 @@ in Classic Computer Science Problem in Python.
 from __future__ import annotations  ## allow 'Optional[Node]' code
 from enum import Enum
 from heapq import heappop, heappush
+from math import sqrt
 import random
 from collections import deque
 from typing import Callable, Deque, Generic, List, NamedTuple, Optional, Protocol, Set, TypeVar
@@ -275,3 +276,17 @@ class PriorityQueue(Generic[T]):
     
     def __repr__(self) -> str:
         return repr(self._container)
+
+
+def euclidean_distance(
+    goal : MazeLocation
+    ) -> Callable[[MazeLocation], float]:
+    """Return function which calculates euclidean distance
+    between MazeLocation and goal"""
+    def distance(ml : MazeLocation) -> float:
+        """Return euclidean distance btw input location and
+        goal location"""
+        xdist: int = ml.column - goal.column
+        ydist: int = ml.row - goal.row
+        return sqrt(xdist * xdist + ydist * ydist)
+    return distance
