@@ -193,3 +193,20 @@ class Maze:
             possible_locs.append(MazeLocation(loc.row, loc.column - 1))
         
         return possible_locs
+    
+    def mark(self, path : List[MazeLocation]) -> None:
+        """mark '*' on path from input list"""
+        
+        for loc in path:
+            self._grid[loc.row][loc.column] = Cell.PATH
+        ## re-mark start, goal position
+        self._grid[self.start.row][self.start.column] = Cell.START
+        self._grid[self.goal.row][self.goal.column] = Cell.GOAL
+    
+    def clear(self, path : List[MazeLocation]) -> None:
+        """clear '*' marking on path"""
+        
+        for loc in path:
+            self._grid[loc.row][loc.column] = Cell.EMPTY
+        self._grid[self.start.row][self.start.column] = Cell.START
+        self._grid[self.goal.row][self.goal.column] = Cell.GOAL
