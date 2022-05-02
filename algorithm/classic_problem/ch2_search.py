@@ -6,6 +6,7 @@ in Classic Computer Science Problem in Python.
 ## find path at maze
 from __future__ import annotations  ## allow 'Optional[Node]' code
 from enum import Enum
+from heapq import heappop, heappush
 import random
 from collections import deque
 from typing import Callable, Deque, Generic, List, NamedTuple, Optional, Protocol, Set, TypeVar
@@ -256,3 +257,21 @@ def bfs(
                 frontier.push(Node(neighbor, current_node))
                 explored.add(neighbor)
     return None
+
+
+class PriorityQueue(Generic[T]):
+    def __init__(self) -> None:
+        self._container: List[T] = []
+    
+    @property
+    def empty(self) -> bool:
+        return not self._container
+    
+    def push(self, item: T) -> None:
+        heappush(self._container, item)
+    
+    def pop(self) -> T:
+        return heappop(self._container)
+    
+    def __repr__(self) -> str:
+        return repr(self._container)
