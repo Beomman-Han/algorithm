@@ -3,7 +3,8 @@
 from ch2_search import *
 
 if __name__ == '__main__':
-    maze : Maze = Maze()
+    #maze : Maze = Maze()
+    maze : Maze = Maze(50, 50, 0.2, MazeLocation(0, 0), MazeLocation(49, 49))
     print(maze)
     
     #print(maze.goal_test(MazeLocation(4, 5)))  ## False
@@ -33,3 +34,15 @@ if __name__ == '__main__':
         print(maze)
         maze.clear(path_2)
     
+    ## Test A* algorithm
+    distance: Callable[[MazeLocation], float] = manhattan_distance(maze.goal)
+    solution_3: Optional[Node[MazeLocation]] = astar(
+        maze.start, maze.goal_test, maze.successors, distance)
+    
+    if solution_3 is None:
+        print('No path found by A* algorithm')
+    else:
+        path_3: List[MazeLocation] = node_to_path(solution_3)
+        maze.mark(path_3)
+        print(maze)
+        maze.clear(path_3)
