@@ -290,3 +290,16 @@ def euclidean_distance(
         ydist: int = ml.row - goal.row
         return sqrt(xdist * xdist + ydist * ydist)
     return distance
+
+def manhattan_distance(
+    goal : MazeLocation
+    ) -> Callable[[MazeLocation], float]:
+    """Return nested function which calculates
+    manhattan distance from input location to goal location"""
+    def distance(ml: MazeLocation) -> float:
+        """Return manhattan distance from inpu location to
+        goal location"""
+        xdist: int = abs(ml.column - goal.column)
+        ydist: int = abs(ml.row - goal.row)
+        return xdist + ydist
+    return distance
