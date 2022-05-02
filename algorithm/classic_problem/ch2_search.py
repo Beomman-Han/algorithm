@@ -7,85 +7,9 @@ in Classic Computer Science Problem in Python.
 from __future__ import annotations  ## allow 'Optional[Node]' code
 from enum import Enum
 import random
-from typing import Callable, Generic, List, NamedTuple, Optional, Protocol, Set, TypeVar
+from collections import deque
+from typing import Callable, Deque, Generic, List, NamedTuple, Optional, Protocol, Set, TypeVar
 
-T = TypeVar('T')
-
-class Node(Generic[T]):
-    def __init__(self,
-        state: T,
-        #parent: Optional['Node'],
-        parent: Optional[Node],
-        cost: float = 0.0,
-        heuristic: float =0.0
-        ) -> None:
-        
-        self.state = state
-        self.parent = parent
-        self.cost = cost
-        self.heuristic = heuristic  ## ??
-    
-    def __lt__(self, other: 'Node') -> bool:
-        return (self.cost + self.heuristic) < (other.cost + other.heuristic)
-
-
-class Stack(Generic[T]):
-    """Stack abstract data structure implemented by python list"""
-    
-    def __init__(self) -> None:
-        self._container: List[T] = []
-    
-    @property
-    def empty(self) -> bool:
-        return not self._container
-
-    def push(self, item: T) -> None:
-        self._container.append(item)
-        
-    def pop(self) -> T:
-        return self._container.pop()
-    
-    def __str__(self) -> str:
-        return repr(self._container)
-    
-
-def dfs(
-    initial : T,
-    goal_test : Callable[[T], bool],
-    successors : Callable[[T], List[T]]
-    ) -> Optional[Node[T]]:
-    """Depth first search path from initial to goal"""
-    
-    frontier: Stack = Stack()
-    explored: Set[T] = set()
-    
-    ## start to search path
-    frontier.push(Node(initial, None))
-    explored.add(initial)
-    
-    while not frontier.empty:
-        current_node = frontier.pop()
-        current_state = current_node.state
-        if goal_test(current_state):
-            return current_node
-        for child in successors(current_state):
-            if child not in explored:
-                child_node = Node(child, current_node)
-                frontier.push(child_node)
-                explored.add(child)
-    return None  ## could not find goal
-
-def node_to_path(node: Node[T]) -> List[T]:
-    """transform node connection info to list"""
-    
-    path: List[T] = []
-    curr = node
-    while curr:
-        path.append(curr.state)
-        curr = curr.parent
-    path.reverse()
-    return path
-        
 
 class Cell(str, Enum):
     """Represent status of each cell in maze"""
@@ -210,3 +134,84 @@ class Maze:
             self._grid[loc.row][loc.column] = Cell.EMPTY
         self._grid[self.start.row][self.start.column] = Cell.START
         self._grid[self.goal.row][self.goal.column] = Cell.GOAL
+
+
+T = TypeVar('T')
+
+class Node(Generic[T]):
+    def __init__(self,
+        state: T,
+        #parent: Optional['Node'],
+        parent: Optional[Node],
+        cost: float = 0.0,
+        heuristic: float =0.0
+        ) -> None:
+        
+        self.state = state
+        self.parent = parent
+        self.cost = cost
+        self.heuristic = heuristic  ## ??
+    
+    def __lt__(self, other: 'Node') -> bool:
+        return (self.cost + self.heuristic) < (other.cost + other.heuristic)
+
+
+class Stack(Generic[T]):
+    """Stack abstract data structure implemented by python list"""
+    
+    def __init__(self) -> None:
+        self._container: List[T] = []
+    
+    @property
+    def empty(self) -> bool:
+        return not self._container
+
+    def push(self, item: T) -> None:
+        self._container.append(item)
+        
+    def pop(self) -> T:
+        return self._container.pop()
+    
+    def __str__(self) -> str:
+        return repr(self._container)
+    
+
+def dfs(
+    initial : T,
+    goal_test : Callable[[T], bool],
+    successors : Callable[[T], List[T]]
+    ) -> Optional[Node[T]]:
+    """Depth first search path from initial to goal"""
+    
+    frontier: Stack = Stack()
+    explored: Set[T] = set()
+    
+    ## start to search path
+    frontier.push(Node(initial, None))
+    explored.add(initial)
+    
+    while not frontier.empty:
+        current_node = frontier.pop()
+        current_state = current_node.state
+        if goal_test(current_state):
+            return current_node
+        for child in successors(current_state):
+            if child not in explored:
+                child_node = Node(child, current_node)
+                frontier.push(child_node)
+                explored.add(child)
+    return None  ## could not find goal
+
+def node_to_path(node: Node[T]) -> List[T]:
+    """transform node connection info to list"""
+    
+    path: List[T] = []
+    curr = node
+    while curr:
+        path.append(curr.state)
+        curr = curr.parent
+    path.reverse()
+    return path
+
+
+    
