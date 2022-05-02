@@ -10,7 +10,7 @@ from heapq import heappop, heappush
 from math import sqrt
 import random
 from collections import deque
-from typing import Callable, Deque, Generic, List, NamedTuple, Optional, Protocol, Set, TypeVar
+from typing import Callable, Deque, Dict, Generic, List, NamedTuple, Optional, Protocol, Set, TypeVar
 
 
 class Cell(str, Enum):
@@ -303,3 +303,49 @@ def manhattan_distance(
         ydist: int = abs(ml.row - goal.row)
         return xdist + ydist
     return distance
+
+def astar(
+    initial : T,
+    goal_test : Callable[[T], bool],
+    successors : Callable[[T], List[T]],
+    heuristic : Callable[[T], float]
+    ) -> Optional[Node[T]]:
+    """A* algorithm for searching path
+
+    Parameters
+    ----------
+    initial : T
+        start location
+    goal_test : Callable[[T], bool]
+        function if T is goal location
+    successors : Callable[[T], List[T]]
+        function returns List of T (locations)
+    heuristic : Callable[[T], float]
+        function calculates heuristic estimates
+        of remain distance
+
+    Returns
+    -------
+    Optional[Node[T]]
+        Node with goal location or None
+    """
+    
+    frontier: PriorityQueue[Node[T]] = PriorityQueue()
+    frontier.push(Node(initial, None, 0.0, heuristic(initial)))
+    
+    explored: Dict[T, float] = {initial: 0.0}
+    
+    while not frontier.empty:
+        current_node: Node[T] = frontier.pop()
+        current_state: T = current_node.state
+        if goal_test(current_state):
+            return current_node
+        
+        for neighbor in successors(current_state):
+            new_cost = current_node.cost + 1
+            ## add or update neighbor's cost
+            if neighbor not in explored or explored[neighbor] > new_cost:
+                explored[neighbor] = new_cost        
+                frontier.push(Node(neighbor, current_node,
+                    new_cost, heuristic(neighbor)))
+    return None
