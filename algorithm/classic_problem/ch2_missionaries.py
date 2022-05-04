@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import List
 
 
 MAX_NUM: int = 3
@@ -20,11 +21,23 @@ class MCState:
         boat: bool
         ) -> None:
         
+        """Initialize MCState instance
+        
+        Parameters
+        ----------
+        missionaries : int
+            # of missionaries at west
+        cannibals : int
+            # of cannibals at west
+        boat : bool
+            if True a boat is at west, else at east
+        """
+        
         self.wm = missionaries  ## missionaries at west
         self.wc = cannibals  ## cannibals at west
         self.em = MAX_NUM - missionaries  ## missionaries at east
         self.ec = MAX_NUM - cannibals  ## cannibals at east
-        self.boat = boat
+        self.boat = boat  ## true : west, false : east
     
     def __str__(self) -> str:
         ret_str = f'{self.wm} missionaries and {self.wc} cannibals at west.\n'
@@ -34,3 +47,53 @@ class MCState:
     
     def goal_test(self) -> bool:
         return (self.em == MAX_NUM and self.ec == MAX_NUM)
+    
+    def _check_cannibalism(self) -> bool:
+        return ((self.wm > 0 and self.wc > self.wm) or (self.em > 0 and self.ec > self.em))
+        
+    def successors(self) -> List[MCState]:
+        possible_scenarios = []
+        if self.wm + self.wc != 0:
+            if self.boat:
+                if self.wm - 1 >= 0:
+                    state = MCState(self.wm - 1, self.wc, not self.boat)
+                    if not state._check_cannibalism():
+                        possible_scenarios.append(state)  ## case 1
+                    if self.wc - 1 >= 0:
+                        state = MCState(self.wm - 1, self.wc - 1, not self.boat)
+                        if not state._check_cannibalism():
+                            possible_scenarios.append(state)  ## case 2
+                    if self.wm - 2 >= 0:
+                        state = MCState(self.wm - 2, self.wc, not self.boat)
+                        if not state._check_cannibalism():
+                            possible_scenarios.append(state)  ## case 3
+                if self.wc - 1 >= 0:
+                    state = MCState(self.wm, self.wc - 1, not self.boat)
+                    if not state._check_cannibalism():
+                        possible_scenarios.append(state)  ## case 4
+                    if self.wc - 2 >= 0:
+                        state = MCState(self.wm, self.wc - 2, not self.boat)
+                        if not state._check_cannibalism():
+                            possible_scenarios.append(state)  ## case 5
+            else:
+                if self.em - 1 >= 0:
+                    state = MCState(self.wm + 1, self.wc, not self.boat)
+                    if not state._check_cannibalism():
+                        possible_scenarios.append(state)
+                    if self.ec - 1 >= 0:
+                        state = MCState(self.wm + 1, self.wc + 1, not self.boat)
+                        if not state._check_cannibalism():
+                            possible_scenarios.append(state)
+                    if self.em - 2 >= 0:
+                        state = MCState(self.wm + 2, self.wc, not self.boat)
+                        if not state._check_cannibalism():
+                            possible_scenarios.append(state)
+                if self.ec - 1 >= 0:
+                    state = MCState(self.wm, self.wc + 1, not self.boat)
+                    if not state._check_cannibalism():
+                        possible_scenarios.append(state)
+                    if self.ec - 2 >= 0:
+                        state = MCState(self.wm, self.wc + 2, not self.boat)
+                        if not state._check_cannibalism():
+                            possible_scenarios.append(state)
+        return possible_scenarios
