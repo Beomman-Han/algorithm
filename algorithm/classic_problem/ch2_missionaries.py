@@ -31,3 +31,6 @@ class MCState:
         ret_str += f'{self.em} missionaries and {self.ec} cannibals at east.\n'
         ret_str += f'boat are at {("west" if self.boat else "east")}'
         return ret_str
+    
+    def goal_test(self) -> bool:
+        return (self.em == MAX_NUM and self.ec == MAX_NUM)
