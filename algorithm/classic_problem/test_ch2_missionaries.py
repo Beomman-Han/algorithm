@@ -15,6 +15,7 @@ if __name__ == "__main__":
     possible_scenarios = mc_state.successors()
     for scenario in possible_scenarios:
         print(scenario)
+    print()
     
     ## solve problem
     mc_state = MCState(3, 3, True)
