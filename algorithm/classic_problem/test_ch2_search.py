@@ -4,7 +4,7 @@ from ch2_search import *
 
 if __name__ == '__main__':
     #maze : Maze = Maze()
-    maze : Maze = Maze(50, 50, 0.2, MazeLocation(0, 0), MazeLocation(49, 49))
+    maze : Maze = Maze(20, 80, 0.2, MazeLocation(0, 0), MazeLocation(19, 79))
     print(maze)
     
     #print(maze.goal_test(MazeLocation(4, 5)))  ## False
