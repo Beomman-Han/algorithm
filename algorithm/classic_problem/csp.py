@@ -18,6 +18,7 @@ class Constraint(Generic[V, D], ABC):
     def satisfied(self, assignment: Dict[V, D]) -> bool:
         ...
 
+
 class CSP(Generic[V, D]):
     def __init__(self,
         variables: List[V],
@@ -43,4 +44,14 @@ class CSP(Generic[V, D]):
                 raise LookupError('Not constraint variable.')
             else:
                 self.constraints[variable].append(constraint)
+    
+    def consistent(self,
+        variable : V,
+        assignment : Dict[V, D]
+        ) -> bool:
+        """Check all constraints are satisfied at all variables"""
         
+        for constraint in self.constraints[variable]:
+            if not constraint.satisfied(assignment):
+                return False
+        return True
