@@ -4,7 +4,7 @@ Variables are lacated at domain range with satisfying constraints.
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Generic, List, TypeVar
+from typing import Dict, Generic, List, Optional, TypeVar
 
 V = TypeVar('V')  ## variable
 D = TypeVar('D')  ## domain
@@ -55,3 +55,29 @@ class CSP(Generic[V, D]):
             if not constraint.satisfied(assignment):
                 return False
         return True
+    
+    def backtracking_search(self,
+        assignment : Dict[V, D] = {}
+        ) -> Optional[Dict[V, D]]:
+        """recursive dfs"""
+        
+        ## base case : all variables are assigned at assignment
+        if len(assignment) == len(self.variables):
+            return assignment
+        
+        ## all unassigned variables
+        unassigned : List[V] = [ v for v in self.variables if v not in assignment ]
+        
+        ## bring all possible domains 
+        ## from the first variable in unassigned
+        first : V = unassigned[0]
+        for domain in self.domains[first]:
+            local_assignment = assignment.copy()
+            local_assignment[first] = domain
+            
+            if self.consistent(first, local_assignment):
+                result : Optional[Dict[V, D]] = self.backtracking_search(
+                    local_assignment)
+                if result is not None:
+                    return result
+        return None
