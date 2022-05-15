@@ -44,3 +44,8 @@ class Graph(Generic[V]):
     def add_edge_by_indices(self, u: int, v: int) -> None:
         edge : Edge = Edge(u, v)
         self.add_edge(edge)
+    
+    def add_edge_by_vertices(self, first: V, second: V) -> None:
+        u = self._vertices.index(first)
+        v = self._vertices.index(second)
+        self.add_edge_by_indices(u, v)
