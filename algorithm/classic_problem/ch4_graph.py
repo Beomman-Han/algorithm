@@ -29,4 +29,8 @@ class Graph(Generic[V]):
     def edge_count(self) -> int:
         return sum(map(len, self._edges))
     
-    
+    ## Add vertex to graph and return index
+    def add_vertex(self, vertex: V) -> int:
+        self._vertices.append(vertex)
+        self._edges.append([])  ## Add empty edge
+        return self.vertex_count - 1
