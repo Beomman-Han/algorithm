@@ -34,3 +34,8 @@ class Graph(Generic[V]):
         self._vertices.append(vertex)
         self._edges.append([])  ## Add empty edge
         return self.vertex_count - 1
+    
+    ## Add undirected edge
+    def add_edge(self, edge: Edge) -> None:
+        self._edges[edge.u].append(edge)
+        self._edges[edge.v].append(edge.reversed())
