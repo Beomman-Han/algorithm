@@ -68,3 +68,9 @@ class Graph(Generic[V]):
     
     def edges_for_vertex(self, vertex: V) -> List[Edge]:
         return self.edges_for_index(self.vertex_at(vertex))
+    
+    def __str__(self) -> str:
+        desc : str = ""
+        for i in range(self.vertex_count):
+            desc += f"{self.vertex_at(i)} -> {self.neighbors_for_index(i)}\n"
+        return desc
