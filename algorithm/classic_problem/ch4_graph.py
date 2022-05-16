@@ -52,3 +52,6 @@ class Graph(Generic[V]):
     
     def vertex_at(self, index: int) -> V:
         return self._vertices[index]
+
+    def index_of(self, vertex: V) -> int:
+        return self._vertices.index(vertex)
