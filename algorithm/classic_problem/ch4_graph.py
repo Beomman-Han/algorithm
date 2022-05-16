@@ -62,3 +62,6 @@ class Graph(Generic[V]):
     
     def neighbors_for_vertex(self, vertex: V) -> List[V]:
         return self.neighbors_for_index(self.index_of(vertex))
+    
+    def edges_for_index(self, index: int) -> List[Edge]:
+        return self._edges[index]
