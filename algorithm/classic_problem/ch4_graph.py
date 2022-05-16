@@ -65,3 +65,6 @@ class Graph(Generic[V]):
     
     def edges_for_index(self, index: int) -> List[Edge]:
         return self._edges[index]
+    
+    def edges_for_vertex(self, vertex: V) -> List[Edge]:
+        return self.edges_for_index(self.vertex_at(vertex))
