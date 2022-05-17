@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Generic, List, TypeVar
+from typing import Generic, List, Optional, TypeVar
 
 
 @dataclass
@@ -110,3 +110,18 @@ if __name__ == '__main__':
     city_graph.add_edge_by_vertices('뉴욕', '보스턴')
     city_graph.add_edge_by_vertices('뉴욕', '필라델피아')
     print(city_graph)
+    
+    ## find the shortest path from boston to miami using bfs algorithm
+    import sys
+    sys.path.insert(0, '.')
+    from ch2_search import bfs, Node, node_to_path
+    
+    bfs_result: Optional[Node[V]] = bfs('보스턴', lambda x : x == '마이애미',
+        city_graph.neighbors_for_vertex)
+    
+    if bfs_result is None:
+        print('Not found with bfs algorithm')
+    else:
+        path: List[V] = node_to_path(bfs_result)
+        print('보스턴에서 마이애미까지 최단 경로:')
+        print(path)
