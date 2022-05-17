@@ -14,6 +14,7 @@ class Edge:
     def __str__(self) -> str:
         return f'{self.u} -> {self.v}'
 
+
 V = TypeVar('V')
 
 class Graph(Generic[V]):
@@ -74,3 +75,38 @@ class Graph(Generic[V]):
         for i in range(self.vertex_count):
             desc += f"{self.vertex_at(i)} -> {self.neighbors_for_index(i)}\n"
         return desc
+
+
+if __name__ == '__main__':
+    ## test graph
+    city_graph : Graph[str] = Graph(['시애틀', '샌프란시스코', '로스앤젤레스',
+    '리버사이드', '피닉스', '시카고', '보스턴', '뉴욕', '애틀랜타', '마이애미', 
+    '댈러스', '휴스턴', '디트로이트', '필라델피아', '워싱턴'])
+    
+    city_graph.add_edge_by_vertices('시애틀', '시카고')
+    city_graph.add_edge_by_vertices('시애틀', '샌프란시스코')
+    city_graph.add_edge_by_vertices('시카고', '리버사이드')
+    city_graph.add_edge_by_vertices('시카고', '댈러스')
+    city_graph.add_edge_by_vertices('시카고', '애틀랜타')
+    city_graph.add_edge_by_vertices('시카고', '디트로이트')
+    city_graph.add_edge_by_vertices('샌프란시스코', '리버사이드')
+    city_graph.add_edge_by_vertices('샌프란시스코', '로스앤젤레스')
+    city_graph.add_edge_by_vertices('리버사이드', '로스앤젤레스')
+    city_graph.add_edge_by_vertices('리버사이드', '피닉스')
+    city_graph.add_edge_by_vertices('댈러스', '피닉스')
+    city_graph.add_edge_by_vertices('댈러스', '휴스턴')
+    city_graph.add_edge_by_vertices('댈러스', '애틀랜타')
+    city_graph.add_edge_by_vertices('애틀랜타', '휴스턴')
+    city_graph.add_edge_by_vertices('애틀랜타', '워싱턴')
+    city_graph.add_edge_by_vertices('애틀랜타', '마이애미')
+    city_graph.add_edge_by_vertices('디트로이트', '워싱턴')
+    city_graph.add_edge_by_vertices('디트로이트', '뉴욕')
+    city_graph.add_edge_by_vertices('디트로이트', '보스턴')
+    city_graph.add_edge_by_vertices('로스앤젤레스', '피닉스')
+    city_graph.add_edge_by_vertices('피닉스', '휴스턴')
+    city_graph.add_edge_by_vertices('휴스턴', '마이애미')
+    city_graph.add_edge_by_vertices('워싱턴', '필라델피아')
+    city_graph.add_edge_by_vertices('워싱턴', '마이애미')
+    city_graph.add_edge_by_vertices('뉴욕', '보스턴')
+    city_graph.add_edge_by_vertices('뉴욕', '필라델피아')
+    print(city_graph)
