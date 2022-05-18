@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Generic, List, Optional, TypeVar
+from typing import Generic, List, Optional, Tuple, TypeVar
 
 
 @dataclass
@@ -115,6 +115,17 @@ class WeightedGraph(Generic[V], Graph[V]):
         v : int = self.index_of(second)
         self.add_edge_by_indices(u, v, weight)
 
+    def neighbors_for_index_with_weights(self,
+        index : int
+        ) -> List[Tuple[V, float]]:
+
+        distance_tuples : List[Tuple[V, float]] = []
+        for edge in self.edges_for_index(index):
+            distance_tuples.append(
+                (self.vertex_at(edge.v), edge.weight))
+        
+        return distance_tuples
+        
 
 if __name__ == '__main__':
     ## test graph
