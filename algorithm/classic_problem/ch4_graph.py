@@ -27,7 +27,7 @@ class WeightedEdge(Edge):
     
     def __str__(self) -> str:
         return f'{self.u} {self.weight} -> {self.v}'
-    
+
 
 V = TypeVar('V')
 
@@ -89,6 +89,12 @@ class Graph(Generic[V]):
         for i in range(self.vertex_count):
             desc += f"{self.vertex_at(i)} -> {self.neighbors_for_index(i)}\n"
         return desc
+
+
+class WeightedGraph(Generic[V], Graph[V]):
+    def __init__(self, vertices : List[V] = []) -> None:
+        self._vertices : List[V] = vertices
+        self._edges : List[List[WeightedEdge]] = [[] for _ in vertices]
 
 
 if __name__ == '__main__':
