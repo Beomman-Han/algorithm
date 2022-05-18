@@ -103,7 +103,17 @@ class WeightedGraph(Generic[V], Graph[V]):
         ) -> None:
         
         edge = WeightedEdge(u, v, weight)
-        self._edges[u].append(edge)
+        self.add_edge(edge)
+
+    def add_edge_by_vertices(self,
+        first : V,
+        second : V,
+        weight : float
+        ) -> None:
+        
+        u : int = self.index_of(first)
+        v : int = self.index_of(second)
+        self.add_edge_by_indices(u, v, weight)
 
 
 if __name__ == '__main__':
