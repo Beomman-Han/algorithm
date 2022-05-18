@@ -125,6 +125,12 @@ class WeightedGraph(Generic[V], Graph[V]):
                 (self.vertex_at(edge.v), edge.weight))
         
         return distance_tuples
+    
+    def __str__(self) -> str:
+        desc = ''
+        for i in range(self.vertex_count):
+            desc += f'{self.vertex_at(i)} -> {self.neighbors_for_index_with_weights(i)}\n'
+        return desc
         
 
 if __name__ == '__main__':
