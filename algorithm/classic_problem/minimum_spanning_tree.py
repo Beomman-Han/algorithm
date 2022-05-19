@@ -1,8 +1,8 @@
 from heapq import heappop, heappush
-from typing import Generic, List, TypeVar
+from typing import Generic, List, Optional, TypeVar
 import sys
 sys.path.insert('.', 0)
-from ch4_graph import WeightedEdge
+from ch4_graph import WeightedEdge, WeightedGraph
 
 
 T = TypeVar('T')
@@ -30,3 +30,32 @@ WeightedPath = List[WeightedEdge]  ## type alias for minimum spanning tree
 
 def total_weight(wp : WeightedPath) -> float:
     return sum([edge.weight for edge in wp])
+
+def mst(
+    wg : WeightedGraph,
+    start : int = 0
+    ) -> Optional[WeightedPath]:
+    
+    if start > wg.vertex_count - 1 or start < 0:
+        return None
+    
+    result : WeightedPath = []  ## mst result
+    pq : PriorityQueue[WeightedEdge] = PriorityQueue()
+    visited : List[bool] = [False] * wg.vertex_count
+    
+    def visit(index : int):
+        visited[index] = True
+        for edge in wg.edges_for_index(index):
+            if not visited[edge.v]:
+                pq.push(edge)
+    
+    visit(start)
+    
+    while not pq.empty:
+        edge = pq.pop()
+        if visited[edge.v]:
+            continue
+        result.append(edge)
+        visit(edge.v)
+    
+    return result
