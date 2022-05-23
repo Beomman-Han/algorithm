@@ -5,6 +5,7 @@ from typing import Dict, List, Optional, Tuple, TypeVar
 import sys
 sys.path.insert(0, '.')
 from ch4_graph import WeightedGraph, WeightedEdge
+from minimum_spanning_tree import WeightedPath, print_weighted_path
 
 V = TypeVar('V')
 
@@ -57,3 +58,21 @@ def distance_array_to_vertex_dict(
     for i in range(len(distances)):
         distance_dict[wg.vertex_at(i)] = distances[i]
     return distance_dict
+
+
+def path_dict_to_path(
+    start : int,
+    end : int,
+    path_dict : Dict[int, WeightedEdge]
+    ) -> WeightedPath:
+    
+    if len(path_dict) == 0:
+        return []
+    
+    edge_path : WeightedPath = []
+    e : WeightedEdge = path_dict[end]
+    edge_path.append(e)
+    while e.u != start:
+        e = path_dict[e.u]
+        edge_path.append(e)
+    return list(reversed(edge_path))
