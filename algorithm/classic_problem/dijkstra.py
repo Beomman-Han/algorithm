@@ -46,3 +46,14 @@ def dijkstra(
                 pq.push(DijkstraNode(we.v, we.weight + dist_u))
     
     return distances, path_dict
+
+
+def distance_array_to_vertex_dict(
+    wg : WeightedGraph[V],
+    distances : List[Optional[float]]
+    ) -> Dict[V, Optional[float]]:
+    
+    distance_dict : Dict[V, Optional[float]] = {}
+    for i in range(len(distances)):
+        distance_dict[wg.vertex_at(i)] = distances[i]
+    return distance_dict
