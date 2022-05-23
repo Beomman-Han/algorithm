@@ -1,11 +1,10 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from queue import PriorityQueue
 from typing import Dict, List, Optional, Tuple, TypeVar
 import sys
 sys.path.insert(0, '.')
 from ch4_graph import WeightedGraph, WeightedEdge
-from minimum_spanning_tree import WeightedPath, print_weighted_path
+from minimum_spanning_tree import WeightedPath, print_weighted_path, PriorityQueue
 
 V = TypeVar('V')
 
