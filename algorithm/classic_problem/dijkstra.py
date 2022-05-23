@@ -76,3 +76,55 @@ def path_dict_to_path(
         e = path_dict[e.u]
         edge_path.append(e)
     return list(reversed(edge_path))
+
+
+if __name__ == '__main__':
+    
+    ## test weighted graph
+    city_graph : WeightedGraph[str] = WeightedGraph(['시애틀', '샌프란시스코', '로스앤젤레스',
+    '리버사이드', '피닉스', '시카고', '보스턴', '뉴욕', '애틀랜타', '마이애미', 
+    '댈러스', '휴스턴', '디트로이트', '필라델피아', '워싱턴'])
+    
+    city_graph.add_edge_by_vertices('시애틀', '시카고', 1737)
+    city_graph.add_edge_by_vertices('시애틀', '샌프란시스코', 678)
+    city_graph.add_edge_by_vertices('시카고', '리버사이드', 1704)
+    city_graph.add_edge_by_vertices('시카고', '댈러스', 805)
+    city_graph.add_edge_by_vertices('시카고', '애틀랜타', 588)
+    city_graph.add_edge_by_vertices('시카고', '디트로이트', 238)
+    city_graph.add_edge_by_vertices('샌프란시스코', '리버사이드', 386)
+    city_graph.add_edge_by_vertices('샌프란시스코', '로스앤젤레스', 348)
+    city_graph.add_edge_by_vertices('리버사이드', '로스앤젤레스', 50)
+    city_graph.add_edge_by_vertices('리버사이드', '피닉스', 307)
+    city_graph.add_edge_by_vertices('댈러스', '피닉스', 887)
+    city_graph.add_edge_by_vertices('댈러스', '휴스턴', 225)
+    city_graph.add_edge_by_vertices('댈러스', '애틀랜타', 721)
+    city_graph.add_edge_by_vertices('애틀랜타', '휴스턴', 702)
+    city_graph.add_edge_by_vertices('애틀랜타', '워싱턴', 543)
+    city_graph.add_edge_by_vertices('애틀랜타', '마이애미', 604)
+    city_graph.add_edge_by_vertices('디트로이트', '워싱턴', 396)
+    city_graph.add_edge_by_vertices('디트로이트', '뉴욕', 482)
+    city_graph.add_edge_by_vertices('디트로이트', '보스턴', 613)
+    city_graph.add_edge_by_vertices('로스앤젤레스', '피닉스', 357)
+    city_graph.add_edge_by_vertices('피닉스', '휴스턴', 1015)
+    city_graph.add_edge_by_vertices('휴스턴', '마이애미', 968)
+    city_graph.add_edge_by_vertices('워싱턴', '필라델피아', 123)
+    city_graph.add_edge_by_vertices('워싱턴', '마이애미', 923)
+    city_graph.add_edge_by_vertices('뉴욕', '보스턴', 190)
+    city_graph.add_edge_by_vertices('뉴욕', '필라델피아', 81)
+    print(city_graph)
+
+    distances, path_dict = dijkstra(city_graph, '로스앤젤레스')
+    
+    name_distance : Dict[str, Optional[int]] = \
+        distance_array_to_vertex_dict(city_graph, distances)
+    
+    print('로스앤젤레스에서의 거리:')
+    for key, value in name_distance.items():
+        print(f'{key} : {value}')
+    print('')
+    
+    print('로스앤젤레스에서 보스턴까지의 최단 경로:')
+    path : WeightedPath = path_dict_to_path(city_graph.index_of('로스앤젤레스'),
+                            city_graph.index_of('보스턴'), path_dict)
+
+    print_weighted_path(city_graph, path)
