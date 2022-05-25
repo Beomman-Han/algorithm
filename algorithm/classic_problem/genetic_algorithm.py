@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Tuple, Type, TypeVar
+from enum import Enum
+from typing import Callable, Generic, List, Tuple, Type, TypeVar
 
 
 T = TypeVar('T', bound='Chromosome')
@@ -17,3 +18,27 @@ class Chromosome(ABC):
     
     @abstractmethod
     def mutate(self) -> None: ...
+
+
+C = TypeVar('C', bound=Chromosome)
+
+class GeneticAlgorithm(Generic[C]):
+    SelectionType = Enum("SelectionType", "ROULETTE TOURNAMENT")
+    ## SelectionType = Enum("SelectionType", ("ROULETTE", "TOURNAMENT"))
+    
+    def __init__(self, 
+        initial_population: List[C],
+        threshold: float,
+        max_generations: int = 100,
+        mutation_chance: float = 0.01,
+        crossover_chance: float = 0.7,
+        selection_type: SelectionType = SelectionType.TOURNAMENT
+        ) -> None:
+        
+        self._population = initial_population
+        self._threshold = threshold
+        self._max_generations = max_generations
+        self._mutation_chance = mutation_chance
+        self._crossover_chance = crossover_chance
+        self._selection_type = selection_type
+        self._fitness_key : Callable = type(self._population[0]).fitness
