@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from heapq import nlargest
 from random import choices
 from typing import Callable, Generic, List, Tuple, Type, TypeVar
 
@@ -46,3 +47,8 @@ class GeneticAlgorithm(Generic[C]):
     
     def _pick_roulette(self, wheel: List[float]) -> Tuple[C, C]:
         return tuple(choices(self._population, weights=wheel, k=2))
+    
+    def _pick_tournament(self, num_participants : int) -> Tuple[C, C]:
+        ## pick chromosomes of num_participants randomly
+        participants : List[C] = choices(self._population, k=num_participants)
+        return tuple(nlargest(2, participants, key=self._fitness_key))
