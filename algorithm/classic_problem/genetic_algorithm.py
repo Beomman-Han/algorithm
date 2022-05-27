@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from random import choices
 from typing import Callable, Generic, List, Tuple, Type, TypeVar
 
 
@@ -42,3 +43,6 @@ class GeneticAlgorithm(Generic[C]):
         self._crossover_chance = crossover_chance
         self._selection_type = selection_type
         self._fitness_key : Callable = type(self._population[0]).fitness
+    
+    def _pick_roulette(self, wheel: List[float]) -> Tuple[C, C]:
+        return tuple(choices(self._population, weights=wheel, k=2))
