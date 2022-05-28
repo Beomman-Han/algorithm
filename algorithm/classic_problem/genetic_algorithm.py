@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from heapq import nlargest
 from random import choices, random
+from statistics import mean
 from typing import Callable, Generic, List, Tuple, Type, TypeVar
 
 
@@ -80,3 +81,19 @@ class GeneticAlgorithm(Generic[C]):
         for individual in self._population:
             if random() < self._mutation_chance:
                 individual.mutate()
+    
+    def run(self) -> C:
+        ## run genetic algorithm by max generation,
+        ## return chromosome with the best fitness.
+        best : C = max(self._population, key=self._fitness_key)
+        for generation in range(self._max_generations):
+            if best.fitness() >= self._threshold:
+                return best
+            print(f'세대 {generation} 최상 {best.fitness()} 평균\
+                {mean(map(self._fitness_key, self._population))}')
+            self._reproduce_and_replace()
+            self._mutate()
+            highest : C = max(self._population, key=self._fitness_key)
+            if highest.fitness() > best.fitness():
+                best = highest
+        return best
