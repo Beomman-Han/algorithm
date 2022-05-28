@@ -124,3 +124,16 @@ class SimpleEquation(Chromosome):
         child2.y = self.y
 
         return child1, child2
+    
+    def mutate(self) -> None:
+        ## change x, y values...
+        if random() > 0.5:
+            if random () > 0.5:
+                self.x += 1
+            else:
+                self.x -= 1
+        else:
+            if random() > 0.5:
+                self.y += 1
+            else:
+                self.y -= 1
