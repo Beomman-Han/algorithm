@@ -1,5 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from copy import deepcopy
 from enum import Enum
 from heapq import nlargest
 from random import choices, random, randrange
@@ -111,3 +112,15 @@ class SimpleEquation(Chromosome):
     @classmethod
     def random_instance(cls) -> SimpleEquation:
         return SimpleEquation(randrange(100), randrange(100))
+    
+    def crossover(self,
+        other : SimpleEquation
+        ) -> Tuple[SimpleEquation, SimpleEquation]:
+        ## change y each other...
+        child1 : SimpleEquation = deepcopy(self)
+        child2 : SimpleEquation = deepcopy(other)
+        
+        child1.y = other.y
+        child2.y = self.y
+
+        return child1, child2
