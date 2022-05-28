@@ -1,7 +1,8 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from enum import Enum
 from heapq import nlargest
-from random import choices, random
+from random import choices, random, randrange
 from statistics import mean
 from typing import Callable, Generic, List, Tuple, Type, TypeVar
 
@@ -106,3 +107,7 @@ class SimpleEquation(Chromosome):
     
     def fitness(self) -> float:
         return 6 * self.x - self.x ** 2 + 4 * self.y - self.y ** 2
+    
+    @classmethod
+    def random_instance(cls) -> SimpleEquation:
+        return SimpleEquation(randrange(100), randrange(100))
