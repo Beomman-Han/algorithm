@@ -17,7 +17,11 @@ Repository for studying data structure and algorithm
         
         1) Search Problem - dfs, bfs, A* algorithm
         
-        2) Constraint-Satisfaction Problem - **ING...**
+        2) Constraint-Satisfaction Problem
+
+        3) Graph algorithm - graph framework, bfs, prim algorithm, dijkstra algorithm
+
+        4) Genetic algorithm - generic genetic algorithm
         
 
 - Data Structure :
