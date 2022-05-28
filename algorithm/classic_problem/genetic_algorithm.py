@@ -103,3 +103,6 @@ class SimpleEquation(Chromosome):
     def __init__(self, x : int , y : int) -> None:
         self.x : int = x
         self.y : int = y
+    
+    def fitness(self) -> float:
+        return 6 * self.x - self.x ** 2 + 4 * self.y - self.y ** 2
