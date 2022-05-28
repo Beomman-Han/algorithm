@@ -1,8 +1,8 @@
 from __future__ import annotations
-from typing import Tuple
+from typing import List, Tuple
 import sys
 sys.path.insert(0, '.')
-from genetic_algorithm import Chromosome
+from genetic_algorithm import Chromosome, GeneticAlgorithm
 from copy import deepcopy
 from random import random, randrange
 
@@ -45,3 +45,18 @@ class SimpleEquation(Chromosome):
     
     def __str__(self) -> str:
         return f'X: {self.x} Y: {self.y} fitness: {self.fitness()}'
+
+
+if __name__ == '__main__':
+    ## start with 20 instances
+    initial_population : List[SimpleEquation] = [SimpleEquation.random_instance()
+        for _ in range(20)]
+    
+    genetic_algorithm : GeneticAlgorithm[SimpleEquation] = GeneticAlgorithm(
+        initial_population=initial_population,
+        threshold=13.0, max_generations=100,
+        mutation_chance=0.1, crossover_chance=0.7)
+
+    result : SimpleEquation = genetic_algorithm.run()
+    
+    print(result)
