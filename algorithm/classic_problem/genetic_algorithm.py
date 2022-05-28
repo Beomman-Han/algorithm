@@ -74,3 +74,9 @@ class GeneticAlgorithm(Generic[C]):
         if len(new_population) > len(self._population):
             new_population.pop()
         self._population = new_population
+    
+    def _mutate(self) -> None:
+        ## mutate each chromosome by mutation chance
+        for individual in self._population:
+            if random() < self._mutation_chance:
+                individual.mutate()
