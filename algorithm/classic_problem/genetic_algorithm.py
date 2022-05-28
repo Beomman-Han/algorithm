@@ -137,3 +137,6 @@ class SimpleEquation(Chromosome):
                 self.y += 1
             else:
                 self.y -= 1
+    
+    def __str__(self) -> str:
+        return f'X: {self.x} Y: {self.y} fitness: {self.fitness()}'
