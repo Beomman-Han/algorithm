@@ -1,6 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from math import sqrt
+from random import uniform
 from statistics import mean, pstdev
 from typing import Generic, Iterable, Iterator, List, Sequence, Tuple, TypeVar
 
@@ -20,7 +21,7 @@ class DataPoint:
         self.dimensions : Tuple[float, ...] = tuple(initial)  ## ?
     
     @property
-    def num_dimenstions(self) -> int:
+    def num_dimensions(self) -> int:
         return len(self.dimensions)
     
     def distance(self, other : DataPoint) -> float:
@@ -68,3 +69,13 @@ class KMeans(Generic[Point]):
     def _dimension_slice(self, dimension : int) -> List[float]:
         ## returns value of column from points
         return [x.dimensions[dimension] for x in self._points]
+    
+    def zscore_normalize(self) -> None:
+        zscored : List[List[float]] = [[] for _ in range(len(self._points))]
+        for dimension in range(self._points[0].num_dimensions):
+            dimension_slice : List[float] = self._dimension_slice(dimension)
+            for index, zscore in enumerate(zscores(dimension_slice)):
+                zscored[index].append(zscore)
+                
+        for i in range(len(self._points)):
+            self._points[i].dimensions = tuple(zscored[i])
