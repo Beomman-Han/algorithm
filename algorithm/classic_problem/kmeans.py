@@ -1,5 +1,7 @@
+from __future__ import annotations
+from math import sqrt
 from statistics import mean, pstdev
-from typing import Iterable, List, Sequence, Tuple
+from typing import Iterable, Iterator, List, Sequence, Tuple
 
 
 def zscores(original : Sequence[float]) -> List[float]:
@@ -19,3 +21,9 @@ class DataPoint:
     @property
     def num_dimenstions(self) -> int:
         return len(self.dimensions)
+    
+    def distance(self, other : DataPoint) -> float:
+        combined : Iterator[Tuple[float, float]] = zip(self.dimensions,
+            other.dimensions)
+        differences : List[float] = [(x - y) ** 2 for x, y in combined]
+        return sqrt(sum(differences))
