@@ -60,3 +60,7 @@ class KMeans(Generic[Point]):
             rand_point : DataPoint = self._random_point()
             cluster : KMeans.Cluster = KMeans.Cluster([], rand_point)
             self._clusters.append(cluster)
+    
+    @property
+    def _centroid(self) -> List[DataPoint]:
+        return [x.centroid for x in self._clusters]
