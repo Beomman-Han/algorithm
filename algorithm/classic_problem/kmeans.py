@@ -15,3 +15,7 @@ class DataPoint:
     def __init__(self, initial : Iterable[float]) -> None:
         self._originals : Tuple[float, ...] = tuple(initial)
         self.dimensions : Tuple[float, ...] = tuple(initial)  ## ?
+    
+    @property
+    def num_dimenstions(self) -> int:
+        return len(self.dimensions)
