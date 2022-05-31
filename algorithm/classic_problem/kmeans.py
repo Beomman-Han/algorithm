@@ -1,7 +1,8 @@
 from __future__ import annotations
+from dataclasses import dataclass
 from math import sqrt
 from statistics import mean, pstdev
-from typing import Iterable, Iterator, List, Sequence, Tuple
+from typing import Generic, Iterable, Iterator, List, Sequence, Tuple, TypeVar
 
 
 def zscores(original : Sequence[float]) -> List[float]:
@@ -35,3 +36,27 @@ class DataPoint:
     
     def __repr__(self) -> str:
         return self._originals.__repr__()
+
+
+Point = TypeVar('Point', bound=DataPoint)
+
+class KMeans(Generic[Point]):
+    @dataclass
+    class Cluster:
+        points : List[Point]
+        centroid : DataPoint
+    
+    def __init__(self,
+        k : int,
+        points : List[Point]
+        ) -> None:
+        
+        if k < 1:
+            raise ValueError("k must be >= 1")
+        self._points : List[Point] = points
+        self._zscore_normalize()
+        self._clusters : List[KMeans.Cluster] = []
+        for _ in range(k):
+            rand_point : DataPoint = self._random_point()
+            cluster : KMeans.Cluster = KMeans.Cluster([], rand_point)
+            self._clusters.append(cluster)
