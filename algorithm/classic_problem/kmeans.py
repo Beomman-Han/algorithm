@@ -1,4 +1,5 @@
 from __future__ import annotations
+from copy import deepcopy
 from dataclasses import dataclass
 from functools import partial
 from math import sqrt
@@ -64,7 +65,7 @@ class KMeans(Generic[Point]):
             self._clusters.append(cluster)
     
     @property
-    def _centroid(self) -> List[DataPoint]:
+    def _centroids(self) -> List[DataPoint]:
         return [x.centroid for x in self._clusters]
     
     def _dimension_slice(self, dimension : int) -> List[float]:
@@ -96,9 +97,9 @@ class KMeans(Generic[Point]):
         each data point and allocate the point to the cluster."""
         
         for point in self._points:
-            closest_centroid : DataPoint = min(self._centroid,
+            closest_centroid : DataPoint = min(self._centroids,
                                     key=partial(DataPoint.distance, point))
-            index : int = self._centroid.index(closest_centroid)
+            index : int = self._centroids.index(closest_centroid)
             cluster : KMeans.Cluster = self._clusters[index]
             cluster.points.append(point)
     
@@ -116,3 +117,18 @@ class KMeans(Generic[Point]):
                 mean : float = mean(dimension_slice)
                 means.append(mean)
             cluster.centroid = DataPoint(means)
+    
+    def run(self, max_iterations : int = 100) -> List[KMeans.Cluster]:
+        """Run K-menas clustering algorithm"""
+        
+        for iteration in range(max_iterations):
+            ## clear cluster
+            for cluster in self._clusters:
+                cluster.points.clear()
+            self._assign_clusters()
+            old_centroids : List[KMeans.Cluster] = deepcopy(self._centroids)
+            self._generate_centroids()
+            if old_centroids == self._centroids:
+                print(f'{iteration}회 반복 후 수렴')
+                return self._centroids
+        return self._centroids
