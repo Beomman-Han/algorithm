@@ -129,5 +129,5 @@ class KMeans(Generic[Point]):
             self._generate_centroids()
             if old_centroids == self._centroids:
                 print(f'{iteration}회 반복 후 수렴')
-                return self._centroids
-        return self._centroids
+                return self._clusters
+        return self._clusters
