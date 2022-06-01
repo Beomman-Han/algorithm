@@ -131,3 +131,13 @@ class KMeans(Generic[Point]):
                 print(f'{iteration}회 반복 후 수렴')
                 return self._clusters
         return self._clusters
+
+
+if __name__ == '__main__':
+    point1 : DataPoint = DataPoint([2., 1., 1.])
+    point2 : DataPoint = DataPoint([2., 2., 5.])
+    point3 : DataPoint = DataPoint([3., 1.5, 2.5])
+    kmeans_test : KMeans[DataPoint] = KMeans(2, [point1, point2, point3])
+    test_clusters : List[KMeans.Cluster] = kmeans_test.run()
+    for index, cluster in enumerate(test_clusters):
+        print(f'군집 {index}: {cluster.points}')
