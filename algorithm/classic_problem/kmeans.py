@@ -101,3 +101,18 @@ class KMeans(Generic[Point]):
             index : int = self._centroid.index(closest_centroid)
             cluster : KMeans.Cluster = self._clusters[index]
             cluster.points.append(point)
+    
+    def _generate_centroids(self) -> None:
+        """Update centroids of clusters after allocating data 
+        point to cluster"""
+        
+        for cluster in self._clusters:
+            if len(cluster.points) == 0:
+                continue
+            means : List[float] = []
+            for dimension in range(cluster.points[0].num_dimensions):
+                dimension_slice : List[float] = [x.dimensions[dimension]
+                                                    for x in cluster.points]
+                mean : float = mean(dimension_slice)
+                means.append(mean)
+            cluster.centroid = DataPoint(means)
