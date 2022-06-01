@@ -114,8 +114,7 @@ class KMeans(Generic[Point]):
             for dimension in range(cluster.points[0].num_dimensions):
                 dimension_slice : List[float] = [x.dimensions[dimension]
                                                     for x in cluster.points]
-                mean : float = mean(dimension_slice)
-                means.append(mean)
+                means.append(mean(dimension_slice))
             cluster.centroid = DataPoint(means)
     
     def run(self, max_iterations : int = 100) -> List[KMeans.Cluster]:
