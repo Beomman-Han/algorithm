@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from functools import partial
 from math import sqrt
 from random import uniform
 from statistics import mean, pstdev
@@ -70,7 +71,7 @@ class KMeans(Generic[Point]):
         ## returns value of column from points
         return [x.dimensions[dimension] for x in self._points]
     
-    def zscore_normalize(self) -> None:
+    def _zscore_normalize(self) -> None:
         zscored : List[List[float]] = [[] for _ in range(len(self._points))]
         for dimension in range(self._points[0].num_dimensions):
             dimension_slice : List[float] = self._dimension_slice(dimension)
@@ -89,3 +90,14 @@ class KMeans(Generic[Point]):
             rand_dimensions.append(rand_value)
             
         return DataPoint(rand_dimensions)
+
+    def _assign_clusters(self) -> None:
+        """find a cluster which of centroid is the closest to
+        each data point and allocate the point to the cluster."""
+        
+        for point in self._points:
+            closest_centroid : DataPoint = min(self._centroid,
+                                    key=partial(DataPoint.distance, point))
+            index : int = self._centroid.index(closest_centroid)
+            cluster : KMeans.Cluster = self._clusters[index]
+            cluster.points.append(point)
