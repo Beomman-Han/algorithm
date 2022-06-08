@@ -9,3 +9,6 @@ def dot_product(
     ys : List[float]
     ) -> float:
     return sum([x * y for x, y in zip(xs, ys)])
+
+def sigmoid(x : float) -> float:
+    return 1.0 / (1.0 + exp(-x))
