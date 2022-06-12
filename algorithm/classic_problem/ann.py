@@ -2,7 +2,7 @@
 from __future__ import annotations
 from functools import reduce
 from random import random
-from typing import Callable, List, Optional, TypeVar
+from typing import Callable, List, Optional, Tuple, TypeVar
 from math import exp
 
 
@@ -138,3 +138,16 @@ class Network:
             outs : List[float] = self.outputs(xs)
             self.backpropagate()
             self.update_weights()
+    
+    def validate(self,
+        inputs : List[List[float]],
+        expecteds : List[T],
+        interpret_output : Callable[[List[float]], T]
+        ) -> Tuple[int, int, float]:
+        correct : int = 0
+        for input, expected in zip(inputs, expecteds):
+            result : T = interpret_output(self.outputs(input))
+            if result == expected:
+                correct += 1
+        percentage : float = correct / len(inputs)
+        return correct, len(inputs), percentage
