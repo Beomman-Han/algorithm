@@ -128,3 +128,13 @@ class Network:
                                     (neuron.learning_rate * \
                                     layer.previous_layer.output_cache[w] * \
                                     neuron.delta)
+    
+    def train(self,
+        inputs : List[List[float]],
+        expecteds : List[List[float]]
+        ) -> None:
+        for location, xs in enumerate(inputs):
+            ys : List[float] = expecteds[location]
+            outs : List[float] = self.outputs(xs)
+            self.backpropagate()
+            self.update_weights()
