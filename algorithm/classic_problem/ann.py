@@ -117,3 +117,14 @@ class Network:
         self.layers[last_layer].calculate_deltas_for_output_layer(expected)
         for l in range(last_layer - 1, 0, -1):
             self.layers[l].calculate_deltas_for_hidden_layer(self.layers[l + 1])
+    
+    def update_weights(self) -> None:
+        ## backpropagate() method does not update weights in ann.
+        ## this method updates weights by delta at each neuron
+        for layer in self.layers[1:]:
+            for neuron in layer.neurons:
+                for w in range(len(neuron.weights)):
+                    neuron.weights[w] = neuron.weights[w] + \
+                                    (neuron.learning_rate * \
+                                    layer.previous_layer.output_cache[w] * \
+                                    neuron.delta)
