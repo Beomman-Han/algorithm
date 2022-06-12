@@ -68,3 +68,10 @@ class Layer:
         else:
             self.output_cache = [n.output(inputs) for n in self.neurons]
         return self.output_cache
+
+    def calculate_deltas_for_output_layer(self,
+        expected : List[float]
+        ) -> None:
+        for n in range(len(self.neurons)):
+            self.neurons[n].delta = self.neurons[n].derivative_activation_function(
+                self.neurons[n].output_cache) * (expected[n] - self.output_cache[n])
