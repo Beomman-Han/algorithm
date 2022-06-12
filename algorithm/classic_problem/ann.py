@@ -111,3 +111,9 @@ class Network:
     
     def outputs(self, input: List[float]) -> List[float]:
         return reduce(lambda inputs, layer : layer.outputs(inputs), self.layers, input)
+    
+    def backpropagate(self, expected : List[float]) -> None:
+        last_layer : int = len(self.layers) - 1
+        self.layers[last_layer].calculate_deltas_for_output_layer(expected)
+        for l in range(last_layer - 1, 0, -1):
+            self.layers[l].calculate_deltas_for_hidden_layer(self.layers[l + 1])
