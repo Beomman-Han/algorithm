@@ -60,4 +60,11 @@ class Layer:
                         activation_function, derivative_activation_function)
             self.neurons.append(neuron)
         self.ouput_cache : List[float] = [0.0 for _ in range(num_neurons)]
-        
+    
+    def output(self, inputs: List[float]) -> List[float]:
+        if self.previous_layer is None:
+            ## input layer
+            self.output_cache = inputs
+        else:
+            self.output_cache = [n.output(inputs) for n in self.neurons]
+        return self.output_cache
