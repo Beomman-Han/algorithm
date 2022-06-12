@@ -75,3 +75,11 @@ class Layer:
         for n in range(len(self.neurons)):
             self.neurons[n].delta = self.neurons[n].derivative_activation_function(
                 self.neurons[n].output_cache) * (expected[n] - self.output_cache[n])
+    
+    def calculate_deltas_for_hidden_layer(self, next_layer : Layer) -> None:
+        for index, neuron in enumerate(self.neurons):
+            next_weights : List[float] = [n.weights[index] for n in next_layer.neurons]
+            next_deltas : List[float] = [n.delta for n in next_layer.neurons]
+            sum_weights_and_deltas : float = dot_product(next_weights, next_deltas)
+            neuron.delta = neuron.derivative_activation_function(
+                neuron.output_cache) * sum_weights_and_deltas
