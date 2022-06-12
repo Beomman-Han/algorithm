@@ -1,5 +1,6 @@
 """This is for artificial neural network practice."""
 from __future__ import annotations
+from functools import reduce
 from random import random
 from typing import Callable, List, Optional, TypeVar
 from math import exp
@@ -34,7 +35,7 @@ class Neuron:
         self.output_cache = 0.0
         self.delta = 0.0
     
-    def output(self, inputs : List[float]) -> float:
+    def outputs(self, inputs : List[float]) -> float:
         self.output_cache = dot_product(inputs, self.weights)
         return self.activation_function(self.output_cache)
 
@@ -61,7 +62,7 @@ class Layer:
             self.neurons.append(neuron)
         self.ouput_cache : List[float] = [0.0 for _ in range(num_neurons)]
     
-    def output(self, inputs: List[float]) -> List[float]:
+    def outputs(self, inputs: List[float]) -> List[float]:
         if self.previous_layer is None:
             ## input layer
             self.output_cache = inputs
@@ -107,3 +108,6 @@ class Network:
             next_layer = Layer(self.layers[previous], num_neurons, learning_rate,
                         activation_function, derivative_activation_function)
             self.layers.append(next_layer)
+    
+    def outputs(self, input: List[float]) -> List[float]:
+        return reduce(lambda inputs, layer : layer.outputs(inputs), self.layers, input)
